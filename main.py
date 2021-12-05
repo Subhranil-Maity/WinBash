@@ -1,24 +1,30 @@
+import getpass
 import os
-# from boot import boot, mountEnv, ShutDown
-import boot
-from root.bin.echo import echo
-
+import sys
+from rich import print as pr
+import socket
+from data import echo
 # Varibles 
 isRunning = True
 query = ""
-# Boot Calls
+_dir = ""
+_user = ""
+_device = ""
 
-boot.boot()
-echo("Mounting The Enviorment")
-boot.mountEnv(os.getcwd() + "\\root\\")
-
-# Main While 
+# Main While
 
 while isRunning:
-    query = input("> ")
+    _dir = os.getcwd()
+    _user = getpass.getuser()
+    _device = socket.gethostname()
+    pr(f"[green]{_user}@{_device} [violet] WinBash [yellow]{_dir}")
+    query = input("$ ")
     if query == "exit":
-        boot.ShutDown()
+        sys.exit()
         isRunning = False
     elif query == "ShutDown":
-        boot.ShutDown()
+        sys.exit()
         isRunning = False
+    elif "echo" in query:
+        echo.echo(query)
+
